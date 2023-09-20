@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.io.FileReader;
+import java.util.Collections;
+import java.util.Comparator;
 import java.io.IOException;
 public class Library {
     public ArrayList<Item> library = new ArrayList<>();
@@ -99,16 +101,14 @@ public class Library {
         }
     }
 
-    public void Delete() {
+    public void Delete(int d) {
         if (library.isEmpty()) {
             System.out.println("Library is empty!");
             return;
         }
         else
         {
-            System.out.println("Enter the index to delete the item");
-            Scanner s = new Scanner(System.in);
-            int d = s.nextInt();
+
             d = d - 1;
             boolean flag = false;
             if (d + 1 == library.size()) {
@@ -272,6 +272,7 @@ public class Library {
             {
                 borrowers.add(new Borrower(name,d));
                 I.isBorrowed=true;
+                I.popularity_count++;
                 return true;
             }
         }
@@ -284,6 +285,34 @@ public class Library {
         {
            Borrower b=borrowers.get(i);
            b.displayBorrower();
+        }
+    }
+    public void hotPicks()
+    {
+        int max=0,count=0;
+        ArrayList<Item> sort=new ArrayList<>();
+        sort.addAll(library);
+        int n = sort.size();
+        boolean swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (sort.get(j).popularity_count < sort.get(j + 1).popularity_count) {
+                    Item temp = sort.get(j);
+                    sort.set(j, sort.get(j + 1));
+                    sort.set(j + 1, temp);
+                    swapped = true;
+                }
+            }
+            if (!swapped) {
+                break;
+            }
+        }
+        for(int i=0;i<sort.size();i++)
+        {
+            Item I=sort.get(i);
+            I.display();
+
         }
     }
     void display () {

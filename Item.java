@@ -5,6 +5,7 @@ public class Item implements Configuration {
     public String title;
     public static int nextId = 1;
     public int id;
+    public int popularity_count;
     public Boolean isBorrowed;
     public Item() {
     }
@@ -20,6 +21,7 @@ public class Item implements Configuration {
         title = t;
         id = nextId++;
         isBorrowed=false;
+        popularity_count=0;
     }
     public void display() {
         System.out.print("ID: " + id + " Title: " + title);
@@ -45,36 +47,41 @@ public class Item implements Configuration {
         l.read();
 
         while (true) {
-            System.out.println("Library Management System Menu:\n1. Add Item\n2. " +
-                    "Edit Item\n3. Delete Item\n4. View All Items\n5. View Item by Id\n6. Borrow item" +
-                    "\n7. View Borrower List\n8. Exit \n\nEnter your choice:");
+            System.out.println("Library Management System Menu:\n1. Hot Picks\n2. Borrow item" +
+                    "\n3. Add Item\n4. Edit Item\n5. Delete Item\n6. View All Items" +
+                    "\n7. View Item by Id\n8. View Borrower List\n9. Exit \n\nEnter your choice:");
             choice = s.nextInt();
             if (choice == 1) {
-                l.add();
+                l.hotPicks();
             }
             if (choice == 2) {
-                l.edit();
+                l.borrowItem();
             }
             if (choice == 3) {
-                l.Delete();
+                l.add();
             }
             if (choice == 4) {
-                l.display();
+                l.edit();
             }
             if (choice == 5) {
+                System.out.println("Enter the index to delete the item");
+                int d = s.nextInt();
+                l.Delete(d);
+            }
+            if (choice == 6)
+            {
+                l.display();
+            }
+            if(choice==7)
+            {
                 System.out.println("Enter the id of book to view");
                 int d = s.nextInt();
                 l.displaybtID(d);
             }
-            if (choice == 6)
-            {
-                l.borrowItem();
-            }
-            if(choice==7)
-            {
+            if (choice == 8) {
                 l.borrowerList();
             }
-            if (choice == 8) {
+            if (choice == 9) {
                 break;
             }
         }
