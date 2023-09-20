@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 public class Library {
     public ArrayList<Item> library = new ArrayList<>();
+    public ArrayList<Borrower> borrowers = new ArrayList<>();
 
-    public void read() {
+    public void read()
+    {
         try {
             Scanner s = new Scanner(new FileReader("books.txt"));
             String line;
@@ -67,9 +69,9 @@ public class Library {
             author = s.next();
             System.out.println("Enter the year of publication of the book");
             Year = s.nextInt();
-
             library.add(new Book(title, author, Year));
-        } else if (c.equalsIgnoreCase("Magazines")||c.equalsIgnoreCase("Magazine")) {
+        }
+        else if (c.equalsIgnoreCase("Magazines")||c.equalsIgnoreCase("Magazine")) {
             String title, publisher;
             ArrayList<String> m = new ArrayList<>();
             System.out.println("Enter the title of magazine");
@@ -199,13 +201,10 @@ public class Library {
                     }
                     if (c == 2) {
 
-                        //Soon
+                        System.out.println("Which Author's Name do you want to edit?\n(Press 0 to exit)");
+                        int author=s.nextInt();
 
-                        //System.out.println("Which Author's Name do you want to edit?\n(Press 0 to exit)");
-                        //int author=s.nextInt();
 
-                        //String t = s.next();
-                        //I.setAuthor(t);
                     }
                     if(c==3)
                     {
@@ -247,33 +246,68 @@ public class Library {
             }
         }
     }
-        void display ()
+    public Boolean borrowItem()
+    {
+        Scanner s=new Scanner(System.in);
+        System.out.println("Enter the id of the Item to borrow");
+        int d=s.nextInt();
+        d=d-1;
+        if(d>library.size()||1>library.size())
         {
-            if (library.isEmpty()) {
-                System.out.println("Library is empty!");
-                return;
-            } else {
-                for (int i = 0; i < library.size(); i++) {
-                    Item I = library.get(i);
-                    I.display();
-                }
-            }
-
+            System.out.println("Id does not exist!");
+            return false;
         }
-        void displaybtID()
+        Item I=library.get(d);
+        Borrower b;
+        if(I.isBorrowed==true)
         {
-            System.out.println("Enter the id of book to view");
-            Scanner s = new Scanner(System.in);
-            int d = s.nextInt();
-            if (library.isEmpty()) {
-                System.out.println("Library is empty!");
-                return;
-            } else if (d > library.size()) {
-                System.out.println("Invalid id");
-                return;
-            } else {
-                Item I = library.get(d - 1);
+            System.out.println("Item is not availible!");
+            return false;
+        }
+        else
+        {
+            System.out.println("Enter your name?");
+            String name=s.next();
+            if(I.isBorrowed==false)
+            {
+                borrowers.add(new Borrower(name,d));
+                I.isBorrowed=true;
+                return true;
+            }
+        }
+        return false;
+    }
+    public void borrowerList()
+    {
+        Boolean flag=false;
+        for(int i=0;i< borrowers.size();i++)
+        {
+           Borrower b=borrowers.get(i);
+           b.displayBorrower();
+        }
+    }
+    void display () {
+        if (library.isEmpty()) {
+            System.out.println("Library is empty!");
+            return;
+        } else {
+            for (int i = 0; i < library.size(); i++) {
+                Item I = library.get(i);
                 I.display();
             }
         }
     }
+    void displaybtID(int d)
+    {
+        if (library.isEmpty()) {
+            System.out.println("Library is empty!");
+            return;
+        } else if (d > library.size()) {
+            System.out.println("Invalid id");
+            return;
+        } else {
+            Item I = library.get(d - 1);
+            I.display();
+        }
+    }
+}

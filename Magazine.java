@@ -12,6 +12,10 @@ public class Magazine extends Item{
         author.addAll(a);
         Publisher=p;
     }
+    public ArrayList<String> getAuthor()
+    {
+        return author;
+    }
     public void setAuthor(ArrayList<String> a)
     {
         author.addAll(a);
