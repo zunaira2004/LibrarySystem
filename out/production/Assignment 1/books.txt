@@ -1,6 +1,6 @@
-1,Power,Mr.john,2003
-1,Silence,Unknown,1984
-2,magazine_title,author1_name,author2_name,author3_name.,publisher_company
-3, newspaper_title, publisher_company,20-09-2023
+1,Power,Mr.john,2003,5,222
+1,Silence,Unknown,1984,2,246
+2,magazine_title,author1_name,author2_name,author3_name.,publisher_company,3,546
+3, newspaper_title, publisher_company,20-09-2023,987
 
 

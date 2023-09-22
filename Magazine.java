@@ -5,9 +5,9 @@ public class Magazine extends Item{
     public String Publisher;
     public String authorName;
 
-    public Magazine(String t, ArrayList<String> a, String p)
+    public Magazine(String t, ArrayList<String> a, String p,int pc,int c)
     {
-        super(t);
+        super(t,pc,c);
         author=new ArrayList<>();
         author.addAll(a);
         Publisher=p;
@@ -20,10 +20,22 @@ public class Magazine extends Item{
     {
         author.addAll(a);
     }
+    public void setauthor(String a,int d)
+    {
+        author.set(d,a);
+    }
+    public void displayAuthors()
+    {
+        for(int i=0;i< author.size();i++)
+        {
+            System.out.println((i+1) +". "+author.get(i));
+        }
+    }
     public void setPublisher(String p)
     {
         Publisher=p;
     }
+    @Override
     public void display()
     {
         super.display();
@@ -32,7 +44,13 @@ public class Magazine extends Item{
         {
             System.out.print(author.get(i)+" ");
         }
-        System.out.println("Published by " + Publisher);
+        System.out.println("Published by " + Publisher+ " Cost: "+cost+" Popularity count: "+popularity_count);
     }
 
+    @Override
+    public void costCalculation() {
+        cost=cost*popularity_count;
+        System.out.println("The cost for borrowing this book is: "+cost);
+
+    }
 }

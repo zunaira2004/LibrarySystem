@@ -5,6 +5,7 @@ public class Item implements Configuration {
     public String title;
     public static int nextId = 1;
     public int id;
+    public int cost;
     public int popularity_count;
     public Boolean isBorrowed;
     public Item() {
@@ -17,17 +18,33 @@ public class Item implements Configuration {
     }
     public void setDate(String d) {
     }
-    public Item(String t) {
+    public void displayAuthors() {
+    }
+    public void setauthor(String a,int d){
+    }
+    public Item(String t,int pc,int c) {
         title = t;
         id = nextId++;
         isBorrowed=false;
-        popularity_count=0;
+        popularity_count=pc;
+        cost=c;
     }
     public void display() {
-        System.out.print("ID: " + id + " Title: " + title);
+        System.out.print("ID: " + id +" 3" +
+                "Title: " + title);
+    }
+    public void costCalculation(){
+    }
+    public void setPopularity_count(int pc)
+    {
+        popularity_count=pc;
     }
     void setId(int d) {
         id = d;
+    }
+    void setCost(int c)
+    {
+        cost=c;
     }
     int getId() {
         return id;

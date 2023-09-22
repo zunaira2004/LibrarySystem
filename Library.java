@@ -1,9 +1,6 @@
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 import java.io.FileReader;
-import java.util.Collections;
-import java.util.Comparator;
 import java.io.IOException;
 public class Library {
     public ArrayList<Item> library = new ArrayList<>();
@@ -22,8 +19,10 @@ public class Library {
                 if ("1".equals(var[0])) {
                     String T = var[count++];
                     String A = var[count++];
-                    int Y = Integer.parseInt(var[count]);
-                    Book obj = new Book(T, A, Y);
+                    int Y = Integer.parseInt(var[count++]);
+                    int pc=Integer.parseInt(var[count++]);
+                    int c=Integer.parseInt(var[count]);
+                    Book obj = new Book(T, A, Y,pc,c);
                     library.add(obj);
                     count = 1;
                 } else if ("2".equals(var[0])) {
@@ -35,8 +34,10 @@ public class Library {
                     }
                     authors.add(var[count++]);
                     String comp;
-                    comp = var[count];
-                    Magazine obj = new Magazine(T, authors, comp);
+                    comp = var[count++];
+                    int pc=Integer.parseInt(var[count++]);
+                    int c=Integer.parseInt(var[count]);
+                    Magazine obj = new Magazine(T, authors, comp,pc,c);
                     library.add(obj);
                     count = 1;
                 } else if ("3".equals(var[0])) {
@@ -44,7 +45,9 @@ public class Library {
                     String P = var[count++];
                     String D = var[count++];
 
-                    Newspaper obj = new Newspaper(T, P, D);
+                    int pc=Integer.parseInt(var[count]);
+
+                    Newspaper obj = new Newspaper(T, P,D,pc);
                     library.add(obj);
                     count = 1;
                 }
@@ -63,7 +66,7 @@ public class Library {
         if (c.equalsIgnoreCase("Book")||c.equalsIgnoreCase("books"))
         {
             String title, author;
-            int Year;
+            int Year,cost,pc;
 
             System.out.print("Enter the title of the book: ");
             title = s.next();
@@ -71,7 +74,12 @@ public class Library {
             author = s.next();
             System.out.println("Enter the year of publication of the book");
             Year = s.nextInt();
-            library.add(new Book(title, author, Year));
+            System.out.println("Enter the popularity count");
+            pc=s.nextInt();
+            System.out.println("Enter the cost of book");
+            cost=s.nextInt();
+
+            library.add(new Book(title, author, Year,pc,cost));
         }
         else if (c.equalsIgnoreCase("Magazines")||c.equalsIgnoreCase("Magazine")) {
             String title, publisher;
@@ -88,7 +96,11 @@ public class Library {
             }
             System.out.println("Enter the name of publisher");
             publisher = s.next();
-            library.add(new Magazine(title, m, publisher));
+            System.out.println("Enter the popularity count");
+            int pc=s.nextInt();
+            System.out.println("Enter the cost of magazine");
+            int cost=s.nextInt();
+            library.add(new Magazine(title, m, publisher,pc,cost));
         } else if (c.equalsIgnoreCase("Newspapers")||c.equalsIgnoreCase("newspaper")) {
             String title, publisher, date;
             System.out.println("Enter the name of title");
@@ -97,7 +109,9 @@ public class Library {
             publisher = s.next();
             System.out.println("Enter the date");
             date = s.next();
-            library.add(new Newspaper(title, publisher, date));
+            System.out.println("Enter the popularity count");
+            int pc=s.nextInt();
+            library.add(new Newspaper(title, publisher, date,pc));
         }
     }
 
@@ -144,6 +158,11 @@ public class Library {
     }
 
     public void edit() {
+
+        Scanner s1 = new Scanner(System.in);
+        System.out.println("Which item do you want to edit?");
+        String item = s1.next();
+
         System.out.println("Enter the id of book to edit");
         Scanner s = new Scanner(System.in);
         int d = s.nextInt();
@@ -157,13 +176,11 @@ public class Library {
         {
             Item I = library.get(d - 1);
             int c = 0;
-            Scanner s1 = new Scanner(System.in);
-            System.out.println("Which item do you want to edit?");
-            String item = s1.next();
+
 
             if (item.equalsIgnoreCase("book")||item.equalsIgnoreCase("books")) {
                 while (true) {
-                    System.out.println("To edit\nPress 1 for title\nPress 2 for author\nPress 3 for publication year\nPress 4 to exit");
+                    System.out.println("To edit\nPress 1 for title\nPress 2 for author\nPress 3 for publication year\nPress 4 for popularity count\nPress 5 for cost\nPress 6 to exit");
                     c = s.nextInt();
 
                     if (c == 1) {
@@ -182,6 +199,18 @@ public class Library {
                         I.setYear(t);
                     }
                     if (c == 4) {
+                        System.out.println("Enter new popularity count");
+                        int pc=s.nextInt();
+                        I.setPopularity_count(pc);
+                    }
+                    if(c==5)
+                    {
+                        System.out.println("Enter new cost");
+                        int cost= s.nextInt();
+                        I.setCost(cost);
+                    }
+                    if(c==6)
+                    {
                         break;
                     }
                 }
@@ -190,7 +219,7 @@ public class Library {
             {
                 while(true)
                 {
-                    System.out.println("To edit\nPress 1 for Title\nPress 2 for authors\nPress 3 for publisher company\nPress 4 to exit");
+                    System.out.println("To edit\nPress 1 for Title\nPress 2 for authors\nPress 3 for publisher company\nPress 4 for popularity count\nPress 5 cost\nPress 6 to exit");
                     c=s.nextInt();
 
                     if(c==1)
@@ -199,12 +228,20 @@ public class Library {
                         String t = s.next();
                         I.setTitle(t);
                     }
-                    if (c == 2) {
-
-                        System.out.println("Which Author's Name do you want to edit?\n(Press 0 to exit)");
-                        int author=s.nextInt();
-
-
+                    if (c == 2)
+                    {
+                        Item o=library.get(d-1);
+                        o.displayAuthors();
+                        while(true)
+                        {
+                            System.out.println("Which Author's Name do you want to edit?\n(Press 0 to exit)");
+                            int author=s.nextInt();
+                            if(author==0)
+                                break;
+                            System.out.println("Enter new author");
+                            String name=s.next();
+                            o.setauthor(name,author-1);
+                        }
                     }
                     if(c==3)
                     {
@@ -214,6 +251,18 @@ public class Library {
                     }
                     if(c==4)
                     {
+                        System.out.println("Enter new popularity count");
+                        int pc=s.nextInt();
+                        I.setPopularity_count(pc);
+                    }
+                    if(c==5)
+                    {
+                        System.out.println("Enter new cost");
+                        int cost= s.nextInt();
+                        I.setCost(cost);
+                    }
+                    if(c==6)
+                    {
                         break;
                     }
                 }
@@ -221,7 +270,7 @@ public class Library {
             else  if (item.equalsIgnoreCase("newspaper")||item.equalsIgnoreCase("newspapers"))
             {
                 while (true) {
-                    System.out.println("To edit\nPress 1 for Title\nPress 2 for Publisher Company\nPress 3 for Date\nPress 4 to exit");
+                    System.out.println("To edit\nPress 1 for Title\nPress 2 for Publisher Company\nPress 3 for Date\nPress 4 for popularity count\nPress 5 to exit");
                     c = s.nextInt();
 
                     if (c == 1) {
@@ -240,6 +289,12 @@ public class Library {
                         I.setDate(t);
                     }
                     if (c == 4) {
+                        System.out.println("Enter new popularity count");
+                        int pc=s.nextInt();
+                        I.setPopularity_count(pc);
+                    }
+                    if(c==5)
+                    {
                         break;
                     }
                 }
@@ -249,6 +304,11 @@ public class Library {
     public Boolean borrowItem()
     {
         Scanner s=new Scanner(System.in);
+        System.out.println("To see availible Items, Press 1, else press 0");
+        int c=s.nextInt();
+        if(c==1)
+            displayAvailibleItems();
+
         System.out.println("Enter the id of the Item to borrow");
         int d=s.nextInt();
         d=d-1;
@@ -273,6 +333,9 @@ public class Library {
                 borrowers.add(new Borrower(name,d));
                 I.isBorrowed=true;
                 I.popularity_count++;
+                System.out.println("Item is borrowed successfully!");
+                System.out.println("BILL:");
+                I.costCalculation();
                 return true;
             }
         }
@@ -313,6 +376,18 @@ public class Library {
             Item I=sort.get(i);
             I.display();
 
+        }
+    }
+    void displayAvailibleItems()
+    {
+        System.out.println("Currently availible books are: " );
+        for(int i=0;i<library.size();i++)
+        {
+           Item I=library.get(i);
+           if(I.isBorrowed==false)
+           {
+               I.display();
+           }
         }
     }
     void display () {
